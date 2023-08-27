@@ -349,3 +349,184 @@ print(grafico_media_sedentary)
 * Os gráficos de barras mostram que o sábado é o dia ótimo. Pois em média, é  o que mais os usuários dão passos e o que menos tem minutos sendentários.
 * Informação útil para o aplicativo notificar de uma maneira mais assertiva o usuário a fazer exercicios em dias em que historicamente ele não tem bons números de atividades fisicas e sedentarismo.
 
+### Horário Popular das Atividades Físicas 
+
+```
+intensidade_horario_medio <- intensidade %>%
+  group_by(time) %>%
+  drop_na() %>%
+  summarise(mean_total_int = mean(TotalIntensity))
+
+ggplot(data=intensidade_horario_medio, aes(x=time, y=mean_total_int)) + geom_histogram(stat = "identity", fill='darkblue') +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(title="Horário Preferido")
+```
+<img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/horaPreferida.png?raw=true" alt="" width="50%">
+
+**Percepções**
+
+* Ao criar um novo dataset filtrando apenas a quantidade média de exercicios por horário, é perceptivel que, em média, a prática de execício das pessoas tem uma crescente das 5 às 19 horas. Após isso, vai decaindo até entrar na madrugada. Acredito que esse dado pode ser util para que o aplicativo e/ou o smartwash indicar uma probabilidade de quais horários, por exemplo, a academia tem chances de estar lotada ou não. Isso pode ajudar tanto uma pessoa que quer socializar ou não. Ou até otimizar o tempo gasto na academia. Mas obviamente isso pode ser aprimorado com outras variáveis, como dados de localização, por exemplo.
+
+* O aplicativo com essa informação e cruzando com outros dados pessoais do cotidiano, pode eleger o horário chave para notificar o usuário para ir fazer a atividade física.
+
+
+### Relação tempo na cama X tempo de sono efetivo
+
+```
+ggplot(data=dados_mesclados, aes(x=TotalMinutesAsleep, y=TotalTimeInBed)) + 
+  geom_point() + geom_smooth() + 
+  labs(title="Minutos na Cama X Minutos Dormindo", x="Horas Dormindo", y="Horas na Cama")
+```
+
+<img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/dispers%C3%A3oTimeInBadXAsleep.png?raw=true" alt="" width="50%">
+
+
+**Percepções**
+
+* Essa relação implica dizer que quanto mais tempo os usuários passaram na cama, mais horas de sono tiveram. O que se conclui que os individuos do estudo tem grandes chances de melhorar a quantidade sono ao irem deitar mais cedo. Não há nada de novo aqui, mas existe uma janela de oportunidade para o aplicativo e/ou o smartwash entrarem em cena e alertar o usuário para que se prepare para dormir em #um horário otimizado de acordo com sua rotina.
+
+### Calorias Queimadas por Total de Passos
+
+```
+ggplot(data=dados_mesclados, aes(x = TotalSteps , y = Calories, color = SedentaryMinutes)) +
+  geom_point() + 
+  stat_smooth(method = lm) +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(title = "Calorias Queimadas X Passos",
+       x = "Total de Passos",
+       y = "Calorias Queimadas")
+```
+
+<img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/caloriasqueimadasXpassosXsendetary.png?raw=true" alt="" width="50%">
+
+**Percepções**
+
+* Quantos mais passos uma pessoa dá, mais ativa e mais calorias ela queimará. Isso é uma uma certeza que é observada no gráfico. Mas indo além, e relacionando com a variavel "Sedentary Minutes", é evidenciado alguns usuários claramente sedentários queimando mais calorias do que os mais ativos. Isso pode ser usado a título de incentivo pela Bellabeat aos seus usuários mais sedentários.
+
+======
+### Relação do sedentarismo com a qualidade do sono e latência
+
+```
+ggplot(data=dados_mesclados, aes(x=TotalMinutesAsleep, y=SedentaryMinutes)) + 
+  geom_point(color='darkblue') + geom_smooth() +
+  labs(title="Minutos Dormindo X Minutos Sedentários")
+
+ggplot(data=dados_mesclados, aes(x=SleepLatency, y=SedentaryMinutes)) + 
+  geom_point(color='darkblue') + geom_smooth() +
+  labs(title="Minutos Sedentário X Latência de sono (minutos)")
+```
+
+</head>
+<body>
+    <table>
+        <tr>
+            <td><img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/sedentarioXsono.png?raw=true"></td>
+            <td><img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/SedentarismoXlatencia.png?raw=true"></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+**Percepções**
+
+* Aqui é claramente é notificado o estrago que o sedentarismo pode ter sobre a qualidade de sono. Ambos os gráficos mostram a relação negativa do sedentarismo tanto com a latência do sono (tempo até adormecer após deitado) quanto com o tempo de fato dormindo. 
+* A oportunidade para a Bellabeat seria notificar o usuário quando ele passar muito tempo sedentário. Para assim ele se movimentar de alguma forma.
+* Importante: É necessário apoiar esses insights com mais dados e variáveis, pois correlação não significa causa. 
+
+### Relacionando as intensidades de atividade física como sono
+
+```
+ggplot(data=dados_mesclados, aes(x=TotalMinutesAsleep, y=LightlyActiveMinutes)) + 
+  geom_point(color='darkblue') + geom_smooth() +
+  labs(title="Levemente Ativo (minutos) X Tempo de sono (minutos)")
+
+ggplot(data=dados_mesclados, aes(x=TotalMinutesAsleep, y=FairlyActiveMinutes)) + 
+  geom_point(color='darkblue') + geom_smooth() +
+  labs(title="Consideravelmente Ativo (minutos) X Tempo de sono (minutos)")
+
+ggplot(data=dados_mesclados, aes(x=TotalMinutesAsleep, y=VeryActiveMinutes)) + 
+  geom_point(color='darkblue') + geom_smooth() +
+  labs(title="Muito Ativo (minutos) X Tempo de sono (minutos)")
+```
+</head>
+<body>
+    <table>
+        <tr>
+            <td><img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/dispers%C3%A3olightlyXasleep.png?raw=true"></td>
+            <td><img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/dispersaofairlyXasleep.png?raw=true"></td>
+            <td><img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/dispersaoveryXasleep.png?raw=true"></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+**Percepções**
+
+* Ao examinar essas variaveis, esperava-se uma correlação de quanto mais intensa é a atividade fisica, maior seria qualidade do sono. Mas isso não foi claramente constatado.
+
+
+### Relacionando as intensidades de atividade física com a latência
+
+```
+ggplot(data=dados_mesclados, aes(x=SleepLatency, y=LightlyActiveMinutes)) + 
+  geom_point(color='darkblue') + geom_smooth() +
+  labs(title="Levemente Ativo (minutos) X Latência do sono (minutos)")
+
+ggplot(data=dados_mesclados, aes(x=SleepLatency, y=FairlyActiveMinutes)) + 
+  geom_point(color='darkblue') + geom_smooth() +
+  labs(title="Consideravelmente Ativo (minutos) X Latência do sono (minutos)")
+
+ggplot(data=dados_mesclados, aes(x=SleepLatency, y=VeryActiveMinutes)) + 
+  geom_point(color='darkblue') + geom_smooth() +
+  labs(title="Muito Ativo (minutos) X Latência do sono (minutos)")
+```
+
+</head>
+<body>
+    <table>
+        <tr>
+            <td><img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/latenciaXlightly.png?raw=true"></td>
+            <td><img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/latenciaXfairly.png?raw=true"></td>
+            <td><img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/latenciaXvery.png?raw=true"></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+**Percepções**
+
+* Era esperada uma correlação mais forte de que quanto mais intensa for a atividade fisica, menos tempo um indivíduo gasta para adormecer. Porém, de acordo com os dados disponíveis, essa correlação não foi encontrada.
+
+
+## Conclusão e recomendações
+
+### Conclusões da análise:
+
+* Na análise dos dados, os usuários se comportaram na maior parte dos registros como sedentários e levemente ativos. Com uma pequena vantagem dos sedentários. Juntos somam mais de 80%;
+*	O tempo médio diário que os usuários passaram em estado de sedentarismo é de 991 minutos ou 16 horas;
+*	Em média, os participantes dormiram 419.5 minutos ou praticamente 7 horas por noite;
+*	A média de tempo entre deitar na cama e adormecer (latência do sono) que os pesquisados gastaram foi de 39 minutos;
+*	Dentre os dados da pesquisa, em média, o dia ótimo quando levado em consideração o maior número de passos e as menor quantidade de minutos sedentários, foi o sábado. A sexta foi o dia mais sedentário de todos.
+*	A prática de exercícios físicos dos usuários tiveram trajetória ascendente entre às 5 e 19 horas. Após isso, decaiu até entrar na madrugada. O pico aconteceu às 18 horas. Às 3 da madrugada é o horário de menor atividade;
+*	Foi evidenciada uma correlação negativa entre o tempo que os usuários passaram sedentários e o tempo de sono. Ou seja, quanto mais sedentário, menos minutos de sono tiveram;
+*	Também foi evidenciada uma correlação negativa entre a latência do sono e o tempo que os usuários passam sedentários. Em outras palavras, quanto mais sedentário, mais os usuários demoraram para adormecer;
+*	Não foi identificada correlação entre o tipo de intensidade de exercícios e a quantidade minutos de sono. Quando relacionada com a latência, também não houve algo satisfatório.
+
+### Recomendações para o aplicativo/smartwatch
+
+*	A Bellabeat pode usar a informação diária do usuário para mostrar qual a categoria que o dia foi alocada e dar dicas de como manter ou melhorar a situação. 
+*	Podem ser criados alertas do aplicativo e/ou smartwatch para o usuário se preparar para dormir em um horário otimizado de acordo com informações de sua rotina;
+*	De acordo com informações do usuário, o aplicativo pode eleger o horário chave para notificar o usuário para ir fazer a atividade física; 
+*	Notificar o usuário quando ele passar muito tempo sedentário. Para assim ele se movimentar de alguma forma;
+*	Incentivar de uma maneira mais assertiva o usuário a fazer exercícios em dias em que historicamente ele não tem bons números de atividades físicas e sedentarismo. 
+*	De acordo com as opções de estilo de vida e desejos do usuário e cruzando com informações de peso e IMC, o aplicativo pode ajudar no controle do consumo de calorias sugerindo opções de alimentos de ganho de massa ou de perda de gordura, por exemplo.
+*	Possibilitar aos usuários comparar seu desempenho com usuários de perfil similar.
+
+### Recomendações de marketing para expansão global:
+
+*	Obter mais variáveis e uma amostra de dados maior para uma análise mais precisa;
+*	No estudo foi evidenciado vários casos de usuários sedentários com um gasto calórico maior do que usuários que praticam atividades físicas. O aplicativo poderia utilizar informações como essa a título de incentivo. 
+*	Campanha educativa de estilo saudável para incentivar os usuários a fazerem exercícios ativos curtos durante a semana, mais longos nos finais de semana. Especificamente onde historicamente a incidência é baixa;
+*	A campanha educacional do item anterior pode ser combinada com um sistema de incentivo de premiação de pontos. Os usuários que completarem o exercício da semana inteira receberão pontos Bellabeat em produtos/assinaturas; 
+*	Fazer parcerias com eventos esportivos, e usar a tecnologia Bellabeat para monitorar atletas durante as competições.
+*	Patrocinar atletas para que eles usem a tecnologia e exponham a qualidade.
