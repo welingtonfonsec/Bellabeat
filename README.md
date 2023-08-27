@@ -6,7 +6,7 @@
 
 [3. Dados](#dados)
 
-[4. Processamento e Análise](#processamento-e-limpeza)
+[4. Processamento e Análise](#processamento-e-análise)
 
 [5. Análise e Visualização](#análise-e-visualização)
 
