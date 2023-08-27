@@ -221,9 +221,131 @@ SedentaryMinutes
 dados_mesclados <- merge(sono, atividade, by=c('Id', 'date'))
 ```
 
-Considerações importantes aqui:
+**Considerações importantes aqui:**
 
 * Poderia ser usada a função ```"rbind()"``` para combinar as tabelas, mas a função ```"merge()"``` optimiza isso, pois ela combina e não repete colunas. Bem semelhante a um JOIN em SQL;
 * A função "merge()" trouxe as colunas "date" e "id" sem que ocorram repetições;
 * Poderiamos usar todas as colunas do estudo de caso, mas por serem mais completas, a decisão de mesclar os datasets "sono" e "atividade" é mais assertada. Além de reduzir o tamanho e ganhar desempenho.
+
+
+## Conversões
+
+### Criando novas colunas que representam valores originais em minutos para horas:
+
+```
+dados_mesclados$TotalHoursAsleep <- dados_mesclados$TotalMinutesAsleep / 60
+dados_mesclados$TotalHoursInBed <- dados_mesclados$TotalTimeInBed / 60
+dados_mesclados$SedentaryHours <- dados_mesclados$SedentaryMinutes / 60
+```
+
+### Criando a coluna latência do Sono:
+
+```
+dados_mesclados$SleepLatency <- dados_mesclados$TotalTimeInBed - dados_mesclados$TotalMinutesAsleep
+
+summary(dados_mesclados$SleepLatency)
+```
+
+
+**Percepções**
+* Latência de sono é o tempo que o indviduo leva para adormercer de fato após deitar-se.
+* Embora a amostra seja pequena, temos que os números dos participantes do estudo estão acima do recomendado pela [SleepFoundation.org](https://www.sleepfoundation.org/how-sleep-works/sleep-latency#:~:text=Sleep%20latency%2C%20or%20sleep%20onset,20%20minutes%20to%20fall%20asleep). Enquanto uma latência do sono inferior a oito minutos pode indicar um distúrbio do sono como a narcolepsia, as pessoas que demoram mais de 20 minutos para adormecer podem ter insônia. Logo, uma latência entre 8 e 20 minutos é o ideal. A média dos pesquisados é de 39 minutos. 
+
+
+### Agrupamento de registros
+
+```
+#O agrupamento de registros foi feito por meio de médias cada registro nas categorias de "Sedentary", "Lightly Active", "Fairly Active", "Very Active". 
+dados_tipo_usuario <- dados_mesclados %>%
+  summarise(
+    user_type = factor(case_when(
+      SedentaryMinutes > mean(SedentaryMinutes) & LightlyActiveMinutes < mean(LightlyActiveMinutes) & FairlyActiveMinutes < mean(FairlyActiveMinutes) & VeryActiveMinutes < mean(VeryActiveMinutes) ~ "Sedentary",
+      SedentaryMinutes < mean(SedentaryMinutes) & LightlyActiveMinutes > mean(LightlyActiveMinutes) & FairlyActiveMinutes < mean(FairlyActiveMinutes) & VeryActiveMinutes < mean(VeryActiveMinutes) ~ "Lightly Active",
+      SedentaryMinutes < mean(SedentaryMinutes) & LightlyActiveMinutes < mean(LightlyActiveMinutes) & FairlyActiveMinutes > mean(FairlyActiveMinutes) & VeryActiveMinutes < mean(VeryActiveMinutes) ~ "Fairly Active",
+      SedentaryMinutes < mean(SedentaryMinutes) & LightlyActiveMinutes < mean(LightlyActiveMinutes) & FairlyActiveMinutes < mean(FairlyActiveMinutes) & VeryActiveMinutes > mean(VeryActiveMinutes) ~ "Very Active",
+    ),levels=c("Sedentary", "Lightly Active", "Fairly Active", "Very Active")), Calories, .group=Id) %>%
+  drop_na()
+```
+
+**Considerações importantes aqui:**
+
+* Todos os registros foram divididos em 4 grupos: Sedentário, Levemente Ativo, Consideralvemente ativo e Muito ativo;
+* A classificação se dá por meio de médias e comparações;
+* Esse agrupamento foi feito para ser exibido graficamente mais a frente.
+
+### Criando a coluna dia da semana
+
+```
+dados_mesclados$dia_semana <- weekdays(as.Date(dados_mesclados$SleepDay))
+```
+
+## Análise e Visualização
+
+### Distribuição dos registros por tipo de usuário
+
+```
+dados_tipo_usuario %>%
+  group_by(user_type) %>%
+  summarise(total = n()) %>%
+  mutate(totals = sum(total)) %>%
+  group_by(user_type) %>%
+  summarise(total_percent = total / totals) %>%
+  ggplot(aes(user_type,y=total_percent, fill=user_type)) +
+  geom_col()+
+  scale_y_continuous(labels = scales::percent) +
+  theme(legend.position="none") +
+  labs(title="User type distridution", x=NULL) +
+  theme(legend.position="none", text = element_text(size = 20),plot.title = element_text(hjust = 0.5))
+```
+
+<img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/Distribui%C3%A7aoXtipousuario.png?raw=true" alt="" width="50%">
+
+**Percepções**
+
+* Esse agrupamento não tem como intenção definir o usuário como pertencente a determinada categoria. Mas apenas definir o registro diário. Por exemplo, um determinado usuário pode ter hoje um registro de atividade diária  como sedentário e amanhã como muito ativo.
+
+* Segundo o gráfico, temos que os usuários se comportam na maior parte dos registros como sendentários e levemente ativos. Juntos somam mais de 80%.
+
+* A Bellabeat pode usar essa informação para mostrar ao usuário qual a categoria que seu dia foi alocada e dar dicas de como manter ou melhorar a situação. Exemplo: usuário teve dia classificado como sedentário, a Bellabeat o notifica.
+
+### Passos e tempo sedentário por dia da semana
+
+### Passos por dia da semana
+
+```
+media_totalsteps <- aggregate(TotalSteps ~ dia_semana, data = dados_mesclados, FUN = mean)
+
+grafico_media_totalsteps <- ggplot(media_totalsteps, aes(x = dia_semana, y = TotalSteps)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Média de Total de Passos x Dia da Semana",
+       x = "Dia da Semana",
+       y = "Média de Total de Passos") +
+  theme_minimal()
+
+print(grafico_media_totalsteps)
+```
+<img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/passosXdiadasemana.png?raw=true" alt="" width="50%">
+
+
+### Minutos sedentárias por dia da semana
+
+```
+media_sedentary <- aggregate(SedentaryMinutes ~ dia_semana, data = dados_mesclados, FUN = mean)
+
+grafico_media_sedentary <- ggplot(media_sedentary, aes(x = dia_semana, y = SedentaryMinutes)) +
+  geom_bar(stat = "identity", fill = "red") +
+  labs(title = "Média de Minutos Sedentários x Dia da Semana",
+       x = "Dia da Semana",
+       y = "Média de Minutos Sedentários") +
+  theme_minimal()
+
+print(grafico_media_sedentary)
+```
+<img src="https://github.com/welingtonfonsec/Bellabeat/blob/main/Graficos/minsedentariosXdiadasemana.png?raw=true" alt="" width="50%">
+
+
+**Percepções**
+
+* Os gráficos de barras mostram que o sábado é o dia ótimo. Pois em média, é  o que mais os usuários dão passos e o que menos tem minutos sendentários.
+* Informação útil para o aplicativo notificar de uma maneira mais assertiva o usuário a fazer exercicios em dias em que historicamente ele não tem bons números de atividades fisicas e sedentarismo.
 
