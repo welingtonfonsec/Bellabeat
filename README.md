@@ -429,8 +429,8 @@ ggplot(data=dados_mesclados, aes(x=SleepLatency, y=SedentaryMinutes)) +
 
 **Percepções**
 
-* Aqui é claramente é notificado o estrago que o sedentarismo pode ter sobre a qualidade de sono. Ambos os gráficos mostram a relação negativa do sedentarismo tanto com a latência do sono (tempo até adormecer após deitado) quanto com o tempo de fato dormindo. 
-* A oportunidade para a Bellabeat seria notificar o usuário quando ele passar muito tempo sedentário. Para assim ele se movimentar de alguma forma.
+* Aqui é claramente é notificado o estrago que o sedentarismo pode ter sobre a quantidade de minutos de sono. O primeiro gráfico mostra a relação negativa do sedentarismo com a qualidade do sono. 
+* Já no segundo gráfico, era esperada uma relação positiva do sedentarismo e latência do sono. No sentido de quanto mais sendentário é o indivíduo, mais tempo é gasto para adormecer. O que na verdade não é evidenciado nessa amostra. 
 * Importante: É necessário apoiar esses insights com mais dados e variáveis, pois correlação não significa causa. 
 
 ### Relacionando as intensidades de atividade física como sono
@@ -462,7 +462,7 @@ ggplot(data=dados_mesclados, aes(x=TotalMinutesAsleep, y=VeryActiveMinutes)) +
 
 **Percepções**
 
-* Ao examinar essas variaveis, esperava-se uma correlação de quanto mais intensa é a atividade fisica, maior seria qualidade do sono. Mas isso não foi claramente constatado.
+* Ao examinar essas variaveis, esperava-se uma correlação de quanto mais intensa fosse a atividade fisica, mais minutos de sono. Mas isso não foi claramente constatado.
 
 
 ### Relacionando as intensidades de atividade física com a latência
@@ -509,7 +509,7 @@ ggplot(data=dados_mesclados, aes(x=SleepLatency, y=VeryActiveMinutes)) +
 *	Dentre os dados da pesquisa, em média, o dia ótimo quando levado em consideração o maior número de passos e as menor quantidade de minutos sedentários, foi o sábado. A sexta foi o dia mais sedentário de todos.
 *	A prática de exercícios físicos dos usuários tiveram trajetória ascendente entre às 5 e 19 horas. Após isso, decaiu até entrar na madrugada. O pico aconteceu às 18 horas. Às 3 da madrugada é o horário de menor atividade;
 *	Foi evidenciada uma correlação negativa entre o tempo que os usuários passaram sedentários e o tempo de sono. Ou seja, quanto mais sedentário, menos minutos de sono tiveram;
-*	Também foi evidenciada uma correlação negativa entre a latência do sono e o tempo que os usuários passam sedentários. Em outras palavras, quanto mais sedentário, mais os usuários demoraram para adormecer;
+*	Não foi evidenciada uma correlação positiva entre a latência do sono e o tempo que os usuários passam sedentários;
 *	Não foi identificada correlação entre o tipo de intensidade de exercícios e a quantidade minutos de sono. Quando relacionada com a latência, também não houve algo satisfatório.
 
 ### Recomendações para o aplicativo/smartwatch
