@@ -540,7 +540,7 @@ print(correlacao8)
 *	Dentre os dados da pesquisa, em média, o dia ótimo quando levado em consideração o maior número de passos e as menor quantidade de minutos sedentários, foi o sábado. A sexta foi o dia mais sedentário de todos.
 *	A prática de exercícios físicos dos usuários tiveram trajetória ascendente entre às 5 e 19 horas. Após isso, decaiu até entrar na madrugada. O pico aconteceu às 18 horas. Às 3 da madrugada é o horário de menor atividade;
 *	Foi evidenciada uma correlação negativa entre o tempo que os usuários passaram sedentários e o tempo de sono. Ou seja, quanto mais sedentário, menos minutos de sono tiveram;
-*	Não foi evidenciada uma correlação positiva entre a latência do sono e o tempo que os usuários passam sedentários;
+*	Não foi evidenciada uma correlação significativa entre a latência do sono e o tempo que os usuários passam sedentários;
 *	Não foi identificada correlação entre o tipo de intensidade de exercícios e a quantidade minutos de sono. Quando relacionada com a latência, também não houve algo satisfatório.
 
 ### Recomendações para o aplicativo/smartwatch
