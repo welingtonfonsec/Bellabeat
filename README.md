@@ -403,7 +403,6 @@ ggplot(data=dados_mesclados, aes(x = TotalSteps , y = Calories, color = Sedentar
 
 * Quantos mais passos uma pessoa dá, mais ativa e mais calorias ela queimará. Isso é uma uma certeza que é observada no gráfico. Mas indo além, e relacionando com a variavel "Sedentary Minutes", é evidenciado alguns usuários claramente sedentários queimando mais calorias do que os mais ativos. Isso pode ser usado a título de incentivo pela Bellabeat aos seus usuários mais sedentários.
 
-======
 ### Relação do sedentarismo com a qualidade do sono e latência
 
 ```
@@ -427,10 +426,18 @@ ggplot(data=dados_mesclados, aes(x=SleepLatency, y=SedentaryMinutes)) +
 </body>
 </html>
 
+```
+correlacao <- cor(dados_mesclados$SedentaryMinutes, dados_mesclados$TotalMinutesAsleep)
+print(correlacao)
+
+correlacao2 <- cor(dados_mesclados$SedentaryMinutes, dados_mesclados$SleepLatency)
+print(correlacao)
+```
+
 **Percepções**
 
-* Aqui é claramente é notificado o estrago que o sedentarismo pode ter sobre a quantidade de minutos de sono. O primeiro gráfico mostra a relação negativa do sedentarismo com a qualidade do sono. 
-* Já no segundo gráfico, era esperada uma relação positiva do sedentarismo e latência do sono. No sentido de quanto mais sendentário é o indivíduo, mais tempo é gasto para adormecer. O que na verdade não é evidenciado nessa amostra. 
+* O primeiro gráfico mostra a relação negativa do sedentarismo com a qualidade do sono. Ao usar a função ```cor()```, foi encontrada uma correlação negativa moderada de -0,599394;
+* Já no segundo gráfico, era esperada uma relação positiva do sedentarismo e latência do sono. No sentido de quanto mais sendentário é o indivíduo, mais tempo é gasto para adormecer. O que na verdade não é evidenciado nessa amostra. Fato também observado na função ```cor()``` onde foi notada uma correlação negativa fraca de -0,1654;
 * Importante: É necessário apoiar esses insights com mais dados e variáveis, pois correlação não significa causa. 
 
 ### Relacionando as intensidades de atividade física como sono
@@ -460,9 +467,21 @@ ggplot(data=dados_mesclados, aes(x=TotalMinutesAsleep, y=VeryActiveMinutes)) +
 </body>
 </html>
 
+```
+correlacao3 <- cor(dados_mesclados$LightlyActiveMinutes, dados_mesclados$TotalMinutesAsleep)
+print(correlacao3)
+
+correlacao4 <- cor(dados_mesclados$FairlyActiveMinutes, dados_mesclados$TotalMinutesAsleep)
+print(correlacao4)
+
+correlacao5 <- cor(dados_mesclados$VeryActiveMinutes, dados_mesclados$TotalMinutesAsleep)
+print(correlacao5)
+```
+
 **Percepções**
 
 * Ao examinar essas variaveis, esperava-se uma correlação de quanto mais intensa fosse a atividade fisica, mais minutos de sono. Mas isso não foi claramente constatado.
+* Ao utilizar a função ```cor()``` entre as atividades de intensidade: leve, moderada e muito ativas apresentam, respectivamente, correlações: positiva, negativa e negativa. A semelhança entre todas é que estas correlações são bem fracas e inconclusivas.  
 
 
 ### Relacionando as intensidades de atividade física com a latência
@@ -493,9 +512,21 @@ ggplot(data=dados_mesclados, aes(x=SleepLatency, y=VeryActiveMinutes)) +
 </body>
 </html>
 
+```
+correlacao6 <- cor(dados_mesclados$LightlyActiveMinutes, dados_mesclados$TotalMinutesAsleep)
+print(correlacao6)
+
+correlacao7 <- cor(dados_mesclados$FairlyActiveMinutes, dados_mesclados$TotalMinutesAsleep)
+print(correlacao7)
+
+correlacao8 <- cor(dados_mesclados$VeryActiveMinutes, dados_mesclados$TotalMinutesAsleep)
+print(correlacao8)
+```
+
 **Percepções**
 
 * Era esperada uma correlação mais forte de que quanto mais intensa for a atividade fisica, menos tempo um indivíduo gasta para adormecer. Porém, de acordo com os dados disponíveis, essa correlação não foi encontrada.
+* Ao utilizar a função ```cor()``` entre as atividades de intensidade: leve, moderada e muito ativas apresentam, respectivamente, correlações: negativa, positiva e negativa. A semelhança entre todas é que estas correlações são bem fracas e inconclusivas.  
 
 
 ## Conclusão e recomendações
