@@ -1,3 +1,12 @@
+# ESTUDO DE CASO: Análise de Dados sobre Comportamento de Uso de Dispositivos Inteligentes da Empresa Bellabeat: Tendências e Padrões Emergentes
+
+Autor: Welington Fonseca
+
+Apresentação em forma de [Storytelling do Power BI](https://app.powerbi.com/view?r=eyJrIjoiMDg2NzM5YmYtY2MyYy00NTk4LWFiYzItNzViN2M4MDNlOTg0IiwidCI6Ijk5NWRiNjhkLThmNGMtNGM5OS05NDA2LTkzOTVjNGY3ZDA0ZSJ9)
+
+Dashboard Power BI
+
+
 ## Índice
 
 [1. Introdução](#introdução)
