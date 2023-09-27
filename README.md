@@ -1,4 +1,5 @@
-# ESTUDO DE CASO: Análise de Dados sobre Comportamento de Uso de Dispositivos Inteligentes da Empresa Bellabeat: Tendências e Padrões Emergentes
+# ESTUDO DE CASO: 
+## Análise de Dados sobre Comportamento de Uso de Dispositivos Inteligentes da Empresa Bellabeat: Tendências e Padrões Emergentes
 
 Autor: Welington Fonseca
 
