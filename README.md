@@ -5,9 +5,6 @@ Autor: Welington Fonseca
 
 Apresentação em forma de [Storytelling no Power BI](https://app.powerbi.com/view?r=eyJrIjoiMDg2NzM5YmYtY2MyYy00NTk4LWFiYzItNzViN2M4MDNlOTg0IiwidCI6Ijk5NWRiNjhkLThmNGMtNGM5OS05NDA2LTkzOTVjNGY3ZDA0ZSJ9)
 
-Dashboard no Power BI
-
-
 ## Índice
 
 [1. Introdução](#introdução)
